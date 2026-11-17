@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NorthBank | Bank Account Management</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Login and sign-up -->
+  <section id="login-page" class="login-screen">
+    <form id="login-form" class="login-card">
+      <div class="brand-mark large">₹</div>
+      <p class="eyebrow">WELCOME TO</p>
+      <h1>NorthBank</h1>
+      <p class="muted">Bank Account Management System</p>
+      <label for="username">Username</label>
+      <input id="username" name="username" autocomplete="username" required placeholder="Enter username">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Enter password">
+      <p id="login-error" class="error"></p>
+      <button class="primary-btn full" type="submit">Sign In</button>
+      <p class="demo-hint">Demo admin: <b>admin</b> / <b>admin123</b></p>
+      <p class="auth-switch">New to NorthBank? <button id="show-signup" class="inline-link" type="button">Create an account</button></p>
+    </form>
+
+    <form id="signup-form" class="login-card hidden">
+      <div class="brand-mark large">₹</div>
+      <p class="eyebrow">JOIN NORTHBANK</p>
+      <h1>Create account</h1>
+      <p class="muted">Register to access the demo banking workspace.</p>
+      <label for="signup-name">Full name</label>
+      <input id="signup-name" name="name" autocomplete="name" required placeholder="Enter your full name">
+      <label for="signup-email">Email address</label>
+      <input id="signup-email" name="email" type="email" autocomplete="email" required placeholder="name@example.com">
+      <label for="signup-username">Username</label>
+      <input id="signup-username" name="username" autocomplete="username" required minlength="4" placeholder="Choose a username">
+      <label for="signup-password">Password</label>
+      <input id="signup-password" name="password" type="password" autocomplete="new-password" required minlength="6" placeholder="At least 6 characters">
+      <label for="signup-confirm">Confirm password</label>
+      <input id="signup-confirm" name="confirm" type="password" autocomplete="new-password" required minlength="6" placeholder="Re-enter your password">
+      <p id="signup-error" class="error"></p>
+      <button class="primary-btn full" type="submit">Create Account</button>
+      <p class="auth-switch">Already registered? <button id="show-login" class="inline-link" type="button">Sign in</button></p>
+    </form>
+  </section>
+
+  <!-- Main application -->
+  <div id="app" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">₹</span>
+        <div><strong>NorthBank</strong><small>Management System</small></div>
+      </div>
+      <nav>
+        <button class="nav-link active" data-view="dashboard">▦ <span>Dashboard</span></button>
+        <button class="nav-link" data-view="accounts">▤ <span>Accounts</span></button>
+        <button class="nav-link" data-view="holders">♙ <span>Account Holders</span></button>
+        <button class="nav-link" data-view="transactions">⇄ <span>Transactions</span></button>
+        <button class="nav-link" data-view="about">ⓘ <span>About Bank</span></button>
+      </nav>
+      <button id="logout-btn" class="logout-btn">↪ <span>Logout</span></button>
+      <p class="sidebar-note">● Demo environment</p>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><p class="eyebrow">BANKING WORKSPACE</p><h1 id="page-title">Dashboard</h1></div>
+        <div class="user-chip"><span class="avatar">AD</span><span><b>Admin Demo</b><small>Administrator</small></span></div>
+      </header>
+
+      <!-- Dashboard -->
+      <section id="dashboard-view" class="view">
+        <div class="welcome-row">
+          <div><h2>Welcome back 👋</h2><p>Here is your banking system overview.</p></div>
+          <button class="primary-btn" id="open-create">＋ Create Account</button>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><span class="stat-icon purple">▤</span><p>Total Accounts</p><h2 id="total-accounts">0</h2><small>Registered customers</small></article>
+          <article class="stat-card"><span class="stat-icon green">₹</span><p>Total Balance</p><h2 id="total-balance">₹0.00</h2><small>Across all accounts</small></article>
+          <article class="stat-card"><span class="stat-icon orange">⇄</span><p>Transactions</p><h2 id="total-transactions">0</h2><small>Recorded activities</small></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><h3>Recent Transactions</h3><p>Latest account activity</p></div><button class="text-btn" data-go="transactions">View all →</button></div>
+            <div id="recent-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><h3>Quick Actions</h3><p>Manage customer funds</p></div></div>
+            <button class="action-tile" id="quick-deposit"><span class="action-icon green">＋</span><span><b>Deposit Money</b><small>Add funds to an account</small></span><strong>→</strong></button>
+            <button class="action-tile" id="quick-withdraw"><span class="action-icon orange">−</span><span><b>Withdraw Money</b><small>Withdraw from an account</small></span><strong>→</strong></button>
+            <button class="action-tile" id="quick-transfer"><span class="action-icon purple">⇄</span><span><b>Transfer Money</b><small>Move funds between accounts</small></span><strong>→</strong></button>
+          </article>
+        </div>
+      </section>
+
+      <!-- Accounts -->
+      <section id="accounts-view" class="view hidden">
+        <div class="section-toolbar"><div><h2>Bank Accounts</h2><p>Create and manage customer accounts.</p></div><button class="primary-btn" id="accounts-create">＋ New Account</button></div>
+        <div class="panel table-wrap">
+          <table><thead><tr><th>ACCOUNT HOLDER</th><th>ACCOUNT NUMBER</th><th>TYPE</th><th>BALANCE</th><th>STATUS</th></tr></thead><tbody id="accounts-table"></tbody></table>
+        </div>
+      </section>
+
+      <!-- Account holders -->
+      <section id="holders-view" class="view hidden">
+        <div class="section-toolbar"><div><h2>Account Holder Details</h2><p>Customer contact and account information.</p></div><input id="holder-search" class="search" placeholder="Search name, email or account"></div>
+        <div id="holder-cards" class="holder-grid"></div>
+        <div id="holder-detail" class="panel hidden"></div>
+      </section>
+
+      <!-- Transactions -->
+      <section id="transactions-view" class="view hidden">
+        <div class="section-toolbar"><div><h2>Transaction History</h2><p>Deposits, withdrawals and transfers.</p></div><input id="transaction-search" class="search" placeholder="Search transactions..."></div>
+        <div class="panel table-wrap">
+          <table><thead><tr><th>TYPE</th><th>ACCOUNT</th><th>DESCRIPTION</th><th>DATE</th><th>AMOUNT</th></tr></thead><tbody id="transactions-table"></tbody></table>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section id="about-view" class="view hidden">
+        <div class="about-hero">
+          <div class="brand-mark large">₹</div>
+          <p class="eyebrow">ABOUT OUR DEMO BANK</p>
+          <h2>Banking made simpler.</h2>
+          <p>NorthBank is a sample banking brand created for this educational Bank Account Management System project.</p>
+        </div>
+        <div class="about-grid">
+          <article class="panel"><h3>Our Vision</h3><p>To demonstrate a simple and convenient way to manage banking accounts through a clear digital interface.</p></article>
+          <article class="panel"><h3>Our Mission</h3><p>To make account creation, deposits, withdrawals, transfers and transaction review easy to understand.</p></article>
+          <article class="panel"><h3>Our Services</h3><ul><li>Savings and current accounts</li><li>Cash deposits and withdrawals</li><li>Account-to-account transfers</li><li>Transaction history</li></ul></article>
+          <article class="panel"><h3>Technology</h3><p>HTML provides the page structure, CSS styles the interface, and JavaScript handles application logic and browser storage.</p></article>
+          <article class="panel"><h3>Contact Information</h3><p>Email: support@northbank.example</p><p>Location: Tamil Nadu, India</p></article>
+          <article class="panel"><h3>Project Information</h3><p>This is a front-end educational project. It is not connected to a real bank or payment network.</p></article>
+        </div>
+        <div class="notice"><b>Important demo notice</b><p>Do not enter real personal or financial information. This application does not provide real authentication, bank-grade security or real-money transactions.</p></div>
+      </section>
+      <footer>NorthBank demo · Data stored in this browser · Not a real banking service</footer>
+    </main>
+  </div>
+
+  <!-- Shared modal -->
+  <div id="modal-backdrop" class="modal-backdrop hidden">
+    <div class="modal">
+      <div class="modal-head"><div><p class="eyebrow">NORTHBANK</p><h2 id="modal-title">Create Account</h2></div><button id="close-modal" class="close-btn" type="button">×</button></div>
+      <form id="bank-form"><div id="form-fields"></div><p id="form-error" class="error"></p><div class="modal-actions"><button id="cancel-modal" class="secondary-btn" type="button">Cancel</button><button id="submit-form" class="primary-btn" type="submit">Create Account</button></div></form>
+    </div>
+  </div>
+  <div id="toast" class="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
